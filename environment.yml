@@ -1,0 +1,10 @@
+name: student_project
+
+dependencies:
+- numpy
+- pandas
+- pandas 
+- jupyterlab
+- matplotlib
+- seaborn
+- scipy
