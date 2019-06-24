@@ -1,108 +1,179 @@
-"""This module contains auxiliary function which we use in the example notebook."""
+"""This module contains auxiliary functions which we use in the main notebook."""
 import json
 
-import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
-from scipy.stats import norm
+import matplotlib as plt
 import pandas as pd
 import numpy as np
-
-from grmpy.estimate.estimate_output import calculate_mte
-from grmpy.read.read import read
+import statsmodels as sm
 
 
-def process_data(df, output_file):
-    """This function adds squared and interaction terms to the Cainero data set."""
+# ************* RDD TABLES ***************************************************************
 
-    # Delete redundant columns\n",
-    for key_ in ['newid', 'caseid']:
-        del df[key_]
+def pvalue_5percent_red(val):
+    """
+    Formatting Function: Takes a scalar and returns a string with the css property `'color: red'` 
+    for values below 0.05, black otherwise.
+    """
+    color = 'red' if val < 0.05 else 'black'
+    return 'color: %s' % color
 
-    # Add squared terms
-    for key_ in ['mhgc', 'cafqt', 'avurate', 'lurate_17', 'numsibs', 'lavlocwage17']:
-        str_ = key_ + 'sq'
-        df[str_] = df[key_] ** 2
 
-    # Add interaction terms
-    for j in ['pub4', 'lwage5_17', 'lurate_17', 'tuit4c']:
-        for i in ['cafqt', 'mhgc', 'numsibs']:
-            df[j + i] = df[j] * df[i]
+def create_table_6(groups_dict, groups_labels, outcome):
+    table = table_template.copy()
+    table['groups'] = groups_labels
+    table = table.set_index('groups')
+        
+    for group in groups_labels:
+        data = groups_dict[group]
+        data = data.dropna(subset=[outcome])
+        
+        model = sm.regression.linear_model.OLS(data[outcome], data[regressors], hasconst=True)
+        result = model.fit(cov_type='cluster', cov_kwds={'groups': data['clustervar']})
+        outputs = [result.params['gpalscutoff'], result.pvalues['gpalscutoff'], result.bse['gpalscutoff'], 
+                   result.params['const'], result.pvalues['const'], result.bse['const'], 
+                   len(data[outcome])]   
+        table.loc[group] = outputs
+    table = table.round(3)
+    return table
 
-    df.to_pickle(output_file + '.pkl')
+# ************* RDD PLOTS ****************************************************************
 
+def create_predictions(data, outcome):
     
-def plot_est_mte(rslt, file):
-    """This function calculates the marginal treatment effect for different quartiles of the
-    unobservable V. ased on the calculation results."""
+    steps = np.arange(-1.2,1.25,0.05)
+    predictions_df = pd.DataFrame([])
+    # Ensure there are no missings in the outcome variable
+    data = data.dropna(subset=[outcome])   
+    # Loop through bins or 'steps'.
+    for step in steps:  
+        #df =  df.dropna(subset=['year2_dist_from_cut'])
+        df = data[(data.dist_from_cut >= (step - 0.6)) & (data.dist_from_cut <= (step + 0.6))]
+        # Run regression for with all values in the range specified above.
+        model = sm.regression.linear_model.OLS(df[outcome], df[regressors], hasconst=True)
+        result = model.fit(cov_type='cluster', cov_kwds={'groups': df['clustervar']})
 
-    init_dict = read(file)
-    data_frame = pd.read_pickle(init_dict['ESTIMATION']['file'])
+            # Fill in row for each step in the prediction datframe. 
+        predictions_df.loc[step,'dist_from_cut'] = step
+        if step < 0: 
+            predictions_df.loc[step,'gpalscutoff'] = 1 
+        else:
+            predictions_df.loc[step,'gpalscutoff'] = 0 
 
-    # Define the Quantiles and read in the original results
-    quantiles = [0.0001] + np.arange(0.01, 1., 0.01).tolist() + [0.9999]
-    mte_ = json.load(open('data/mte_original.json', 'r'))
-    mte_original = mte_[1]
-    mte_original_d = mte_[0]
-    mte_original_u = mte_[2]
+        predictions_df.loc[step,'gpaXgpalscutoff']= (predictions_df.loc[step,'dist_from_cut'])*predictions_df.loc[step,'gpalscutoff']
+        predictions_df.loc[step,'gpaXgpagrcutoff']= (predictions_df.loc[step,'dist_from_cut'])*(1-predictions_df.loc[step,'gpalscutoff'])
+        predictions_df.loc[step,'const'] = 1
 
-    # Calculate the MTE and confidence intervals
-    mte = calculate_mte(rslt, init_dict, data_frame, quantiles)
-    mte = [i / 4 for i in mte]
-    mte_up, mte_d = calculate_cof_int(rslt, init_dict, data_frame, mte, quantiles)
+        # Make prediction for each step based on regression of each step and save value in the prediction dataframe.
+        predictions_df.loc[step,'prediction'] = result.predict(exog=[[
+                                                    predictions_df.loc[step,'const'], 
+                                                    predictions_df.loc[step,'gpalscutoff'],
+                                                    predictions_df.loc[step,'gpaXgpalscutoff'], 
+                                                    predictions_df.loc[step,'gpaXgpagrcutoff']
+                                                ]])
 
-    # Plot both curves
-    ax = plt.figure(figsize=(17.5, 10)).add_subplot(111)
+    predictions_df.round(4)
+            
+    return predictions_df
 
-    ax.set_ylabel(r"$B^{MTE}$", fontsize=24)
-    ax.set_xlabel("$u_D$", fontsize=24)
-    ax.tick_params(axis='both', which='major', labelsize=18)
-    ax.plot(quantiles, mte, label='grmpy $B^{MTE}$', color='blue', linewidth=4)
-    ax.plot(quantiles, mte_up, color='blue', linestyle=':', linewidth=3)
-    ax.plot(quantiles, mte_d, color='blue', linestyle=':', linewidth=3)
-    ax.plot(quantiles, mte_original, label='original$B^{MTE}$', color='orange', linewidth=4)
-    ax.plot(quantiles, mte_original_d, color='orange', linestyle=':',linewidth=3)
-    ax.plot(quantiles, mte_original_u, color='orange', linestyle=':', linewidth=3)
-    ax.set_ylim([-0.41, 0.51])
-    ax.set_xlim([-0.005, 1.005])
 
-    blue_patch = mpatches.Patch(color='blue', label='original $B^{MTE}$')
-    orange_patch = mpatches.Patch(color='orange', label='grmpy $B^{MTE}$')
-    plt.legend(handles=[blue_patch, orange_patch],prop={'size': 16})
-    plt.show()
+def create_fig3_predictions(groups_dict):
+    
+    predictions_groups_dict = {}
+    # Loop through groups:
+    for group in groups_dict:    
 
-    return mte
+        steps = np.arange(-1.2,1.25,0.05)
+        predictions_df = pd.DataFrame([])
+        
+        # Loop through bins or 'steps'.
+        for step in steps:  
+            # Select dataframe from the dictionary.
+            df = groups_dict[group][(groups_dict[group].dist_from_cut >= (step - 0.6)) & (groups_dict[group].dist_from_cut <= (step+0.6))]
+            # Run regression for with all values in the range specified above.
+            model = sm.regression.linear_model.OLS(df['left_school'], df[regressors], hasconst=True)
+            result = model.fit(cov_type='cluster', cov_kwds={'groups': df['clustervar']})
+            
+            # Fill in row for each step in the prediction datframe. 
+            predictions_df.loc[step,'dist_from_cut'] = step
+            if step < 0: 
+                predictions_df.loc[step,'gpalscutoff'] = 1 
+            else:
+                predictions_df.loc[step,'gpalscutoff'] = 0 
 
-def calculate_cof_int(rslt, init_dict, data_frame, mte, quantiles):
-    """This function calculates the confidence interval of the marginal treatment effect."""
+            predictions_df.loc[step,'gpaXgpalscutoff']= (predictions_df.loc[step,'dist_from_cut'])*predictions_df.loc[step,'gpalscutoff']
+            predictions_df.loc[step,'gpaXgpagrcutoff']= (predictions_df.loc[step,'dist_from_cut'])*(
+                                                         1-predictions_df.loc[step,'gpalscutoff']
+                                                         )
+            predictions_df.loc[step,'const'] = 1
+            
+            # Make prediction for each step based on regression of each step and save value in the prediction dataframe.
+            predictions_df.loc[step,'prediction'] = result.predict(exog=[[
+                                                        predictions_df.loc[step,'const'], 
+                                                        predictions_df.loc[step,'gpalscutoff'],
+                                                        predictions_df.loc[step,'gpaXgpalscutoff'], 
+                                                        predictions_df.loc[step,'gpaXgpagrcutoff']
+                                                    ]])
 
-    # Import parameters and inverse hessian matrix
-    hess_inv = rslt['AUX']['hess_inv'] / data_frame.shape[0]
-    params = rslt['AUX']['x_internal']
+            predictions_df = predictions_df.round(4)
+        # Save the predictions for all groups in a dictionary. 
+        predictions_groups_dict[group] = predictions_df
+    
+    return predictions_groups_dict
 
-    # Distribute parameters
-    dist_cov = hess_inv[-4:, -4:]
-    param_cov = hess_inv[:46, :46]
-    dist_gradients = np.array([params[-4], params[-3], params[-2], params[-1]])
+# ************ PLOTS *********************************************************************
 
-    # Process data
-    covariates = init_dict['TREATED']['order']
-    x = np.mean(data_frame[covariates]).tolist()
-    x_neg = [-i for i in x]
-    x += x_neg
-    x = np.array(x)
+def fig3_subplots_frame():
+    """ 
+    Creates frame to be used for all subplots of figure 3.
+    """
+    plt.pyplot.xlim(-1.5,1.5,0.1)
+    plt.pyplot.ylim(0,0.22,0.1)
+    plt.pyplot.axvline(x=0, color='r')
+    plt.pyplot.xlabel('First year GPA minus probation cutoff')
+    plt.pyplot.ylabel('Left university voluntarily')
+    plot = plt.pyplot.savefig(fname='plot')
+    return plot
 
-    # Create auxiliary parameters
-    part1 = np.dot(x, np.dot(param_cov, x))
-    part2 = np.dot(dist_gradients, np.dot(dist_cov, dist_gradients))
-    # Prepare two lists for storing the values
-    mte_up = []
-    mte_d = []
 
-    # Combine all auxiliary parameters and calculate the confidence intervals
-    for counter, i in enumerate(quantiles):
-        value = part2 * (norm.ppf(i)) ** 2
-        aux = np.sqrt(part1 + value) / 4
-        mte_up += [mte[counter] + norm.ppf(0.95) * aux]
-        mte_d += [mte[counter] - norm.ppf(0.95) * aux]
 
-    return mte_up, mte_d
+def plot_RDD_curve(df, running_variable, outcome, cutoff):
+    """ Function to plot RDD curves. Function splits dataset into treated and untreated group based on running variable
+        and plots outcome (group below cutoff is treated, group above cutoff is untreated).
+        Args:
+            df(DataFrame): Dataframe containing the data to be plotted.
+            running_variable(column): DataFrame column name of the running variable.
+            outome(column): DataFrame column name of the outcome variable.
+            cutoff(numeric): Value of cutoff.
+        Returns:
+            plot
+    """    
+    df_treat = df[df[running_variable] < cutoff]
+    df_untreat = df[df[running_variable] >= cutoff]
+    plt.pyplot.plot(df_treat[outcome])
+    plt.pyplot.plot(df_untreat[outcome])
+    
+    plot = plt.pyplot.savefig(fname='plot')
+
+    return plot
+
+
+
+def plot_RDD_curve_colored(df, running_variable, outcome, cutoff, color):
+    """ Function to plot RDD curves. Function splits dataset into treated and untreated group based on running variable
+        and plots outcome (group below cutoff is treated, group above cutoff is untreated).
+        Args:
+            df(DataFrame): Dataframe containing the data to be plotted.
+            running_variable(column): DataFrame column name of the running variable.
+            outome(column): DataFrame column name of the outcome variable.
+            cutoff(numeric): Value of cutoff.
+        Returns:
+            plot
+    """    
+    df_treat = df[df[running_variable] < cutoff]
+    df_untreat = df[df[running_variable] >= cutoff]
+    plt.pyplot.plot(df_treat[outcome], color = color, label='_nolegend_')
+    plt.pyplot.plot(df_untreat[outcome], color = color, label='_nolegend_')
+    
+    plot = plt.pyplot.savefig(fname='plot')
+
+    return plot
