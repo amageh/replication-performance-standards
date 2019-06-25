@@ -18,8 +18,46 @@ def pvalue_5percent_red(val):
     return 'color: %s' % color
 
 
+
+
+def estimate_RDD_withdf(data, outcomes, regressors):
+    """ Regression analysis with standard errors clustered GPA, on probation cutoff for outcomes contained in ONE dataframe.
+    
+    Args:
+    data(pd.DataFrame): Dataset containing all data (must contain 'clustervar', 'gpalscutoff', & 'const')
+    outcomes(list): List of all outcomes (must correspond to column names in dataset)
+    regressors(list): List of all regressors(must correspond to column names in dataset (must contain 'gpalscutoff' 
+                     and 'const')
+    
+    Returns:
+    table(pd.DataFrame): Dataframe containing the coefficient, pvalue and standard error for the dummy 
+                        'GPA below cutoff' and the constant.
+    """
+    table = pd.DataFrame({ 'GPA below cutoff (1)': [], 'P-Value (1)':[], 'Std.err (1)':[], 
+                       'Intercept (0)':[], 'P-Value (0)':[], 'Std.err (0)':[], 
+                       'Observations':[]})
+    
+    table['outcomes'] = outcomes
+    table = table.set_index('outcomes')
+    
+    for outcome in outcomes:
+        model = sm.regression.linear_model.OLS(data[outcome], data[regressors], hasconst=True)
+        result = model.fit(cov_type='cluster', cov_kwds={'groups': data['clustervar']})
+        outputs = [result.params['gpalscutoff'], result.pvalues['gpalscutoff'], result.bse['gpalscutoff'], 
+                   result.params['const'], result.pvalues['const'], result.bse['const'], 
+                   len(data[outcome])]   
+        table.loc[outcome] = outputs
+
+    table = table.round(3)
+    return table
+
+
+
+
 def create_table_6(groups_dict, groups_labels, outcome):
-    table = table_template.copy()
+    table = table_template = pd.DataFrame({ 'GPA below cutoff (1)': [], 'P-Value (1)':[], 'Std.err (1)':[], 
+                       'Intercept (0)':[], 'P-Value (0)':[], 'Std.err (0)':[], 
+                       'Observations':[]})
     table['groups'] = groups_labels
     table = table.set_index('groups')
         
@@ -120,7 +158,7 @@ def create_fig3_predictions(groups_dict):
     
     return predictions_groups_dict
 
-# ************ PLOTS *********************************************************************
+# ************ PLOTS FORMATTING, FRAMES, ETC.*********************************************************************
 
 def fig3_subplots_frame():
     """ 
