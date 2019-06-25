@@ -54,7 +54,7 @@ def estimate_RDD_withdf(data, outcomes, regressors):
 
 
 
-def create_table_6(groups_dict, groups_labels, outcome):
+def create_table_6(groups_dict, groups_labels, outcome, regressors):
     table = table_template = pd.DataFrame({ 'GPA below cutoff (1)': [], 'P-Value (1)':[], 'Std.err (1)':[], 
                        'Intercept (0)':[], 'P-Value (0)':[], 'Std.err (0)':[], 
                        'Observations':[]})
