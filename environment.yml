@@ -1,4 +1,4 @@
-name: student_project
+name: project
 
 dependencies:
 - numpy
@@ -8,5 +8,6 @@ dependencies:
 - matplotlib
 - seaborn
 - scipy
+- statsmodels
 - pip:
   - grmpy
