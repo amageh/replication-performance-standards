@@ -38,8 +38,9 @@ def estimate_RDD_multiple_outcomes(data, outcomes, regressors):
     
     table['outcomes'] = outcomes
     table = table.set_index('outcomes')
-    
+
     for outcome in outcomes:
+        data = data.dropna(subset=[outcome])
         model = sm.regression.linear_model.OLS(data[outcome], data[regressors], hasconst=True)
         result = model.fit(cov_type='cluster', cov_kwds={'groups': data['clustervar']})
         outputs = [result.params['gpalscutoff'], result.pvalues['gpalscutoff'], result.bse['gpalscutoff'], 
@@ -70,11 +71,13 @@ def estimate_RDD_multiple_datasets(dictionary, keys, outcome, regressors):
     table = table.set_index('groups')
     
     for key in keys:
-        model = sm.regression.linear_model.OLS(dictionary[key][outcome], dictionary[key][regressors], hasconst=True)
-        result = model.fit(cov_type='cluster', cov_kwds={'groups': dictionary[key]['clustervar']})
+        data = dictionary[key]
+        data = data.dropna(subset=[outcome])
+        model = sm.regression.linear_model.OLS(data[outcome], data[regressors], hasconst=True)
+        result = model.fit(cov_type='cluster', cov_kwds={'groups': data['clustervar']})
         outputs = [result.params['gpalscutoff'], result.pvalues['gpalscutoff'], result.bse['gpalscutoff'], 
                    result.params['const'], result.pvalues['const'], result.bse['const'], 
-                   len(dictionary[key][outcome])]   
+                   len(data[outcome])]   
         table.loc[key] = outputs
 
     table = table.round(3)
@@ -186,20 +189,29 @@ def create_fig3_predictions(groups_dict):
     
     return predictions_groups_dict
 
-# ************ PLOTS FORMATTING, FRAMES, ETC.*********************************************************************
+# ************ PLOTS FORMATTING, FRAMES, ETC.********************************************************************
 
-def fig3_subplots_frame():
-    """ 
-    Creates frame to be used for all subplots of figure 3.
-    """
-    plt.pyplot.xlim(-1.5,1.5,0.1)
-    plt.pyplot.ylim(0,0.22,0.1)
-    plt.pyplot.axvline(x=0, color='r')
-    plt.pyplot.xlabel('First year GPA minus probation cutoff')
-    plt.pyplot.ylabel('Left university voluntarily')
-    plot = plt.pyplot.savefig(fname='plot')
+def plot_figure3(inputs_dict, outputs_dict, keys):
+    plt.pyplot.figure(figsize=(10, 13), dpi= 70, facecolor='w', edgecolor='k')
+    plt.pyplot.subplots_adjust(wspace=0.4, hspace=0.4)    
+    count = range(7)
+    keys = keys.copy()
+    keys.remove('All')
+    for idx, key in enumerate(keys):
+        # Define position of subplot.
+        plot = plt.pyplot.subplot(3,2,idx+1)
+        # Create frame for subplot
+        plot = plt.pyplot.xlim(-1.5,1.5,0.1)
+        plot = plt.pyplot.ylim(0,0.22,0.1)
+        plot = plt.pyplot.axvline(x=0, color='r')
+        plot = plt.pyplot.xlabel('First year GPA minus probation cutoff')
+        plot = plt.pyplot.ylabel('Left university voluntarily')        
+        # Plot subplot.
+        plot = plt.pyplot.plot(inputs_dict[key].left_school.groupby(inputs_dict[key]['bins']).mean(), 'o')
+        plot = plot_RDD_curve(df = outputs_dict[key], running_variable="dist_from_cut", outcome="prediction", cutoff=0)
+        plot = plt.pyplot.title(key)
+ 
     return plot
-
 
 
 def plot_RDD_curve(df, running_variable, outcome, cutoff):
