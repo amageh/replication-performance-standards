@@ -107,7 +107,7 @@ def create_table_6(groups_dict, groups_labels, outcome, regressors):
 
 # ************* RDD PLOTS ****************************************************************
 
-def create_predictions(data, outcome):
+def create_predictions(data, outcome, regressors):
     
     steps = np.arange(-1.2,1.25,0.05)
     predictions_df = pd.DataFrame([])
@@ -145,7 +145,7 @@ def create_predictions(data, outcome):
     return predictions_df
 
 
-def create_fig3_predictions(groups_dict):
+def create_fig3_predictions(groups_dict, regressors):
     
     predictions_groups_dict = {}
     # Loop through groups:
@@ -192,11 +192,24 @@ def create_fig3_predictions(groups_dict):
 # ************ PLOTS FORMATTING, FRAMES, ETC.********************************************************************
 
 def plot_figure3(inputs_dict, outputs_dict, keys):
+    """ Plot results from RD anlaysis for the six subgroups of students in the paper.
+    Args:
+        inputs_dict(dict): Dicionary containing all dataframes for each subgroup, used for plotting the bins (dots).
+        outputs_dict(dict): Dictionary containing the results from RD analysis for each subgroup, used for plotting the lines.
+        keys(list): List of keys of the dictionaries, both dictionarie must have the same keys.
+    
+    Returns:
+        plot: Figure 3 from the paper (figure consists of 6 subplots, one for each subgroup of students)
+    """
+    # Frame for entire figure.
     plt.pyplot.figure(figsize=(10, 13), dpi= 70, facecolor='w', edgecolor='k')
     plt.pyplot.subplots_adjust(wspace=0.4, hspace=0.4)    
-    count = range(7)
+    
+    # Remove dataframe 'All' because I only want to plot the results for the subgroups of students.
     keys = keys.copy()
     keys.remove('All')
+    
+    # Create plots for all subgroups.
     for idx, key in enumerate(keys):
         # Define position of subplot.
         plot = plt.pyplot.subplot(3,2,idx+1)
