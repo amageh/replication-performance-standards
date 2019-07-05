@@ -15,7 +15,6 @@ def create_predictions(data, outcome, regressors):
     data = data.dropna(subset=[outcome])
     # Loop through bins or 'steps'.
     for step in steps:
-        #df =  df.dropna(subset=['year2_dist_from_cut'])
         df = data[(data.dist_from_cut >= (step - 0.6)) &
                   (data.dist_from_cut <= (step + 0.6))]
         # Run regression for with all values in the range specified above.
