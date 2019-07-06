@@ -37,7 +37,7 @@ def plot_figure3(inputs_dict, outputs_dict, keys):
         plot = plt.pyplot.xlabel('First year GPA minus probation cutoff')
         plot = plt.pyplot.ylabel('Left university voluntarily')
         # Plot subplot.
-        plot = plt.pyplot.plot(inputs_dict[key].left_school.groupby(inputs_dict[key]['bins']).mean(), 'o')
+        plot = plt.pyplot.plot(inputs_dict[key].left_school.groupby(inputs_dict[key]['dist_from_cut_med10']).mean(), 'o')
         plot = plot_RDD_curve(
                                 df=outputs_dict[key], 
                                 running_variable="dist_from_cut", 

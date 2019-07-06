@@ -46,6 +46,35 @@ def create_predictions(data, outcome, regressors):
     return predictions_df
 
 
+
+def create_fig1_predictions(data, steps):
+
+    #steps = np.arange(-1.2, 1.25, 0.05)
+    predictions_df = pd.DataFrame([])
+    # Ensure there are no missings in the outcome variable
+    #data = data.dropna(subset=[outcome])
+    # Loop through bins or 'steps'.
+    for step in steps:
+        df = data[(data.bins >= (step - 0.6)) &
+                  (data.bins <= (step + 0.6))]
+        # Run regression for with all values in the range specified above.
+        model = sm.regression.linear_model.OLS(df['counts'], df[['const','bins']], hasconst=True)
+        result = model.fit()
+
+        # Fill in row for each step in the prediction datframe.
+        predictions_df.loc[step, 'bins'] = step
+        predictions_df.loc[step, 'const'] = 1
+        predictions_df.loc[step, 'prediction'] = result.predict(exog=[[
+                                                                        predictions_df.loc[step, 'const'],
+                                                                        predictions_df.loc[step, 'bins'],
+                                                                    ]])
+
+    predictions_df.round(4)
+
+    return predictions_df
+
+
+
 def create_fig3_predictions(groups_dict, regressors):
 
     predictions_groups_dict = {}
