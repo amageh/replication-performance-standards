@@ -7,7 +7,7 @@ import numpy as np
 import statsmodels as sm
 
 
-def create_predictions(data, outcome, regressors):
+def create_predictions(data, outcome, regressors, bandwidth):
 
     steps = np.arange(-1.2, 1.25, 0.05)
     predictions_df = pd.DataFrame([])
@@ -15,8 +15,8 @@ def create_predictions(data, outcome, regressors):
     data = data.dropna(subset=[outcome])
     # Loop through bins or 'steps'.
     for step in steps:
-        df = data[(data.dist_from_cut >= (step - 0.6)) &
-                  (data.dist_from_cut <= (step + 0.6))]
+        df = data[(data.dist_from_cut >= (step - bandwidth)) &
+                  (data.dist_from_cut <= (step + bandwidth))]
         # Run regression for with all values in the range specified above.
         model = sm.regression.linear_model.OLS(df[outcome], df[regressors], hasconst=True)
         result = model.fit(cov_type='cluster', cov_kwds={'groups': df['clustervar']})
@@ -47,7 +47,7 @@ def create_predictions(data, outcome, regressors):
 
 
 
-def create_fig1_predictions(data, steps):
+def create_fig1_predictions(data, steps, bandwidth):
 
     #steps = np.arange(-1.2, 1.25, 0.05)
     predictions_df = pd.DataFrame([])
@@ -55,8 +55,8 @@ def create_fig1_predictions(data, steps):
     #data = data.dropna(subset=[outcome])
     # Loop through bins or 'steps'.
     for step in steps:
-        df = data[(data.bins >= (step - 0.6)) &
-                  (data.bins <= (step + 0.6))]
+        df = data[(data.bins >= (step - bandwidth)) &
+                  (data.bins <= (step + bandwidth))]
         # Run regression for with all values in the range specified above.
         model = sm.regression.linear_model.OLS(df['counts'], df[['const','bins']], hasconst=True)
         result = model.fit()
@@ -75,7 +75,7 @@ def create_fig1_predictions(data, steps):
 
 
 
-def create_fig3_predictions(groups_dict, regressors):
+def create_fig3_predictions(groups_dict, regressors, bandwidth):
 
     predictions_groups_dict = {}
     # Loop through groups:
@@ -87,8 +87,8 @@ def create_fig3_predictions(groups_dict, regressors):
         # Loop through bins or 'steps'.
         for step in steps:
             # Select dataframe from the dictionary.
-            df = groups_dict[group][(groups_dict[group].dist_from_cut >= (step - 0.6)) & 
-                                    (groups_dict[group].dist_from_cut <= (step + 0.6))]
+            df = groups_dict[group][(groups_dict[group].dist_from_cut >= (step - bandwidth)) & 
+                                    (groups_dict[group].dist_from_cut <= (step + bandwidth))]
             # Run regression for with all values in the range specified above.
             model = sm.regression.linear_model.OLS(df['left_school'], df[regressors], hasconst=True)
             result = model.fit(cov_type='cluster', cov_kwds={'groups': df['clustervar']})
