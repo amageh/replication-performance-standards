@@ -58,7 +58,7 @@ def create_fig1_predictions(data, steps, bandwidth):
         df = data[(data.bins >= (step - bandwidth)) &
                   (data.bins <= (step + bandwidth))]
         # Run regression for with all values in the range specified above.
-        model = sm.regression.linear_model.OLS(df['counts'], df[['const','bins']], hasconst=True)
+        model = sm.regression.linear_model.OLS(df['freq'], df[['const','bins']], hasconst=True)
         result = model.fit()
 
         # Fill in row for each step in the prediction datframe.
