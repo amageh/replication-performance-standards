@@ -17,6 +17,9 @@ This repository contains my replication of the results from Lindo et al. (2010) 
 
 The paper and original code can be found in the folder _paper_, the data provided is saved in _data_ and my replication is presented in the notebook _project.ipynb_.
 
+## References
+
+* Lindo, J. M., Sanders, N. J., & Oreopoulos, P. (2010). Ability, gender, and performance standards: Evidence from academic probation. American Economic Journal: Applied Economics, 2(2), 95-117.
 --- 
 [![Build Status](https://travis-ci.org/HumanCapitalAnalysis/student-project-amageh.svg?branch=master)](https://travis-ci.org/HumanCapitalAnalysis/student-project-amageh)
 </a> 
