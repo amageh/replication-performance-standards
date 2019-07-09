@@ -6,6 +6,13 @@
   src="https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.png" 
       width="109" height="20"> 
 </a> 
+<a href="https://mybinder.org/v2/gh/HumanCapitalAnalysis/student-project-amageh/master?filepath=project.ipynb"
+    target="_parent">
+    <img align="center"
+       src="https://mybinder.org/badge_logo.svg"
+       width="109" height="20">
+</a>
+
 
 This repository contains my replication of the results from Lindo et al. (2010) presented in the paper _"Ability, gender, and performance standards: Evidence from academic probation"_. 
 
