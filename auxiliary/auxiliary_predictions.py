@@ -47,7 +47,7 @@ def create_predictions(data, outcome, regressors, bandwidth):
 
 
 
-def create_fig1_predictions(data, steps, bandwidth):
+def create_bin_frequency_predictions(data, steps, bandwidth):
 
     #steps = np.arange(-1.2, 1.25, 0.05)
     predictions_df = pd.DataFrame([])

@@ -12,7 +12,7 @@ def plot_figure3(inputs_dict, outputs_dict, keys):
     Args:
         inputs_dict(dict): Dicionary containing all dataframes for each subgroup, used for plotting the bins (dots).
         outputs_dict(dict): Dictionary containing the results from RD analysis for each subgroup, used for plotting the lines.
-        keys(list): List of keys of the dictionaries, both dictionarie must have the same keys.
+        keys(list): List of keys of the dictionaries, both dictionaries must have the same keys.
 
     Returns:
         plot: Figure 3 from the paper (figure consists of 6 subplots, one for each subgroup of students)
@@ -67,9 +67,7 @@ def plot_RDD_curve(df, running_variable, outcome, cutoff):
     plt.pyplot.plot(df_treat[outcome])
     plt.pyplot.plot(df_untreat[outcome])
 
-    plot = plt.pyplot.savefig(fname='plot')
-
-    return plot
+    return 
 
 
 def plot_RDD_curve_colored(df, running_variable, outcome, cutoff, color):
@@ -97,6 +95,25 @@ def plot_RDD_curve_colored(df, running_variable, outcome, cutoff, color):
                     color=color, 
                     label='_nolegend_')
 
-    plot = plt.pyplot.savefig(fname='plot')
+    return 
 
-    return plot
+
+def plot_bin_frequency_RDD(bin_frequency, bins, predictions):
+    """
+    Args:
+    bin_frequency(pd.DataFrame): Dataframe containing the frequency of each bin.
+    bins(list): List of bins.
+    predictions(pd.DataFrame): Predicted frequency of each bin.
+    
+    Returns: plot
+    """
+    plt.pyplot.xlim(-1.5,1.5,0.1)
+    plt.pyplot.ylim(0,2100.5,50)
+    plt.pyplot.axvline(x=0, color='r')
+    plt.pyplot.xlabel('First year GPA minus probation cutoff')
+    plt.pyplot.ylabel('Frequency count')
+    plt.pyplot.plot(bin_frequency.bins,bin_frequency.freq, 'o')
+    plot_RDD_curve(df = predictions, running_variable="bins", outcome="prediction", cutoff=0)
+    plt.pyplot.title("Figure 1. Distribution of Student Grades Relative to their Cutoff")
+    
+    return 
