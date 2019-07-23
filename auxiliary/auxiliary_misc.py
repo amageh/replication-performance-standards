@@ -8,10 +8,10 @@ import statsmodels as sm
 
 def calculate_bin_frequency(data, bins):
     """
-    Calculates the frequency of bins in a dataframe.
+    Calculates the frequency of differnt bins in a dataframe.
     Args:
     data(pd.DataFrame): Dataframe that contains the raw data.
-    bins(column): Name of column that contains the bins that should be assessed.
+    bins(column): Name of column that contains the variable that should be assessed.
     
     Returns:
     bin_frequency(pd.DataFrame): Dataframe that contains the frequency of each bin in data and and a constant.
@@ -43,3 +43,22 @@ def create_groups_dict(data, keys, columns):
         groups_dict[keys[i]]=data[data[columns[i]] == 1]
             
     return groups_dict
+
+def gen_placebo_data(data, cutoff_deviation):
+    
+    placebo_data = data.copy()
+    placebo_data.loc[:,'dist_from_cut'] = placebo_data.loc[:,'dist_from_cut'] + cutoff_deviation
+
+    for i in range(0,len(placebo_data)):
+        if placebo_data.loc[i,'dist_from_cut'] < 0:
+            placebo_data.loc[i,'gpalscutoff'] = 1
+            placebo_data.loc[i,'gpagrcutoff'] = 0
+
+        else:
+            placebo_data.loc[i,'gpalscutoff'] = 0
+            placebo_data.loc[i,'gpagrcutoff'] = 1
+
+    placebo_data['gpaXgpalscutoff'] = placebo_data['dist_from_cut']*placebo_data['gpalscutoff']
+    placebo_data['gpaXgpagrcutoff'] = placebo_data['dist_from_cut']*placebo_data['gpagrcutoff']  
+
+    return placebo_data  

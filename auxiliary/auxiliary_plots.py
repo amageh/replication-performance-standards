@@ -30,14 +30,17 @@ def plot_figure3(inputs_dict, outputs_dict, keys):
     for idx, key in enumerate(keys):
         # Define position of subplot.
         plot = plt.pyplot.subplot(3, 2, idx + 1)
-        # Create frame for subplot
+        # Create frame for subplot.
         plot = plt.pyplot.xlim(-1.5, 1.5, 0.1)
         plot = plt.pyplot.ylim(0, 0.22, 0.1)
         plot = plt.pyplot.axvline(x=0, color='r')
         plot = plt.pyplot.xlabel('First year GPA minus probation cutoff')
         plot = plt.pyplot.ylabel('Left university voluntarily')
+        # Calculate bin means.
+        bin_means = inputs_dict[key].left_school.groupby(inputs_dict[key]['dist_from_cut_med10']).mean()
+        bin_means = pd.Series.to_frame(bin_means)
         # Plot subplot.
-        plot = plt.pyplot.plot(inputs_dict[key].left_school.groupby(inputs_dict[key]['dist_from_cut_med10']).mean(), 'o')
+        plot = plt.pyplot.plot(list(bin_means.index),list(bin_means.left_school), 'o')
         plot = plot_RDD_curve(
                                 df=outputs_dict[key], 
                                 running_variable="dist_from_cut", 
