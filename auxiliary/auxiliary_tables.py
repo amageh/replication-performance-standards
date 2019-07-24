@@ -8,15 +8,6 @@ import numpy as np
 import statsmodels as sm
 
 
-def pvalue_5percent_red(val):
-    """
-    Formatting Function: Takes a scalar and returns a string with the css property `'color: red'` 
-    for values below 0.05, black otherwise.
-    """
-    color = 'red' if val < 0.05 else 'black'
-    return 'color: %s' % color
-
-
 def estimate_RDD_multiple_outcomes(data, outcomes, regressors):
     """ Regression analysis with standard errors clustered on GPA, on probation cutoff for multiple outcomes contained in ONE dataframe.
 

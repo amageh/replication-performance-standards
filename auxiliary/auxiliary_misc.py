@@ -6,6 +6,15 @@ import numpy as np
 import statsmodels as sm
 
 
+def pvalue_5percent_red(val):
+    """
+    Formatting Function: Takes a scalar and returns a string with the css property `'color: red'` 
+    for values below 0.05, black otherwise.
+    """
+    color = 'red' if val < 0.05 else 'black'
+    return 'color: %s' % color
+
+
 def calculate_bin_frequency(data, bins):
     """
     Calculates the frequency of differnt bins in a dataframe.
@@ -47,7 +56,7 @@ def create_groups_dict(data, keys, columns):
 def gen_placebo_data(data, cutoff_deviation):
     
     placebo_data = data.copy()
-    placebo_data.loc[:,'dist_from_cut'] = placebo_data.loc[:,'dist_from_cut'] + cutoff_deviation
+    placebo_data.loc[:,'dist_from_cut'] = placebo_data.loc[:,'dist_from_cut'] - cutoff_deviation
 
     for i in range(0,len(placebo_data)):
         if placebo_data.loc[i,'dist_from_cut'] < 0:
@@ -60,5 +69,12 @@ def gen_placebo_data(data, cutoff_deviation):
 
     placebo_data['gpaXgpalscutoff'] = placebo_data['dist_from_cut']*placebo_data['gpalscutoff']
     placebo_data['gpaXgpagrcutoff'] = placebo_data['dist_from_cut']*placebo_data['gpagrcutoff']  
+    
+    # Bin data according to new distances from cutoff
+    #bins_labels = np.arange(-1.15,1.25,0.1)
+    #placebo_data['dist_from_cut_med10'] = pd.cut(x=placebo_data['dist_from_cut'],bins=24,labels=bins_labels, right=False)
 
     return placebo_data  
+
+
+
