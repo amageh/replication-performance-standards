@@ -118,3 +118,24 @@ def create_fig3_predictions(groups_dict, regressors, bandwidth):
         predictions_groups_dict[group] = predictions_df
 
     return predictions_groups_dict
+
+
+
+def bootstrap_predictions(n, data, outcome, regressors, bandwidth):
+    bootstrap_pred = pd.DataFrame({})
+    for i in range(0,n):
+        bootstrap = data.sample(n=len(data), replace=True)
+        pred = create_predictions(data=bootstrap, outcome = outcome, regressors=regressors, bandwidth=bandwidth)
+        bootstrap_pred['pred_'+ str(i)]= pred.prediction
+        i=+1
+    return bootstrap_pred 
+
+
+def get_confidence_interval(data, lbound, ubound, index_var):
+    confidence_interval = pd.DataFrame({})
+    for i in data.index:
+        confidence_interval.loc[i,"lower_bound"] = np.percentile(data.loc[i,:], lbound)
+        confidence_interval.loc[i,"upper_bound"] = np.percentile(data.loc[i,:], ubound)
+    
+    confidence_interval[index_var] = confidence_interval.index        
+    return confidence_interval

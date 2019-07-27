@@ -101,6 +101,55 @@ def plot_RDD_curve_colored(df, running_variable, outcome, cutoff, color):
     return 
 
 
+def plot_RDD_curve_CI(df, running_variable, outcome, cutoff, lbound, ubound, CI_color, linecolor):
+    """ Function to plot RDD curves with confidence intervals. Function splits dataset into treated and 
+        untreated group based on running variable and plots outcome (group below cutoff is treated, group above 
+        cutoff is untreated).
+
+        Args:
+            df(DataFrame): Dataframe containing the data to be plotted.
+            running_variable(column): DataFrame column name of the running variable.
+            outome(column): DataFrame column name of the outcome variable.
+            cutoff(numeric): Value of cutoff.
+            lbound(column): Lower bound of confidence interval.
+            ubound(column): Upper bound of confidence interval.
+
+
+        Returns:
+            plot
+    """
+    df_treat = df[df[running_variable] < cutoff]
+    df_untreat = df[df[running_variable] >= cutoff]
+    # Plot confidence Intervals
+    plt.pyplot.plot(df_treat[lbound], color=CI_color, alpha=0.7)
+    plt.pyplot.plot(df_treat[ubound], color=CI_color, alpha=0.7)
+    plt.pyplot.plot(df_untreat[lbound], color=CI_color, alpha=0.7)
+    plt.pyplot.plot(df_untreat[ubound], color=CI_color, alpha=0.7)
+    plt.pyplot.fill_between(df_treat[running_variable], 
+                            y1=df_treat[lbound], 
+                            y2=df_treat[ubound], 
+                            facecolor=CI_color, 
+                            alpha=0.7
+                           )
+    plt.pyplot.fill_between(df_untreat[running_variable], 
+                            y1=df_untreat[lbound], 
+                            y2=df_untreat[ubound], 
+                            facecolor=CI_color, 
+                            alpha=0.7
+                           )
+    
+    # Plot estimated lines
+    plt.pyplot.plot(df_untreat[outcome],
+                    color=linecolor, 
+                    label='_nolegend_'
+                   )
+    plt.pyplot.plot(df_treat[outcome],
+                    color=linecolor, 
+                    label='_nolegend_')
+
+    return 
+
+
 def plot_bin_frequency_RDD(bin_frequency, bins, predictions):
     """
     Args:
@@ -120,3 +169,5 @@ def plot_bin_frequency_RDD(bin_frequency, bins, predictions):
     plt.pyplot.title("Figure 1. Distribution of Student Grades Relative to their Cutoff")
     
     return 
+
+
