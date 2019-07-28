@@ -75,3 +75,26 @@ def estimate_RDD_multiple_datasets(dictionary, keys, outcome, regressors):
 
     table = table.round(3)
     return table
+
+
+
+def create_table1(data):
+    variables = data[['hsgrade_pct', 'totcredits_year1', 'age_at_entry', 'male', 'english', 'bpl_north_america',
+                        'loc_campus1', 'loc_campus2', 'loc_campus3', 'dist_from_cut', 'probation_year1', 'probation_ever',
+                        'left_school', 'year2_dist_from_cut', 'suspended_ever', 'gradin4', 'gradin5', 'gradin6']]
+
+    table1 = pd.DataFrame()
+    table1['Mean'] = variables.mean()
+    table1['Standard Deviation'] = variables.std()
+    table1 = table1.astype(float).round(2)
+    table1['Description'] = ["High School Grade Percentile", "Credits attempted first year", "Age at entry",
+                             "Male", "English is first language", "Born in North America",
+                             "At Campus 1", "At Campus 2", "At Campus 3",
+                             "Distance from cutoff in first year", "On probation after first year", " Ever on acad. probation",
+                             "Left Uni after 1st evaluation", "Distance from cutoff at next evaluation", "Ever suspended",
+                             "Graduated by year  4", "Graduated by year  5", "Graduated by year  6"]
+
+    table1.loc[0:9, 'Type'] = "Characteristics"
+    table1.loc[9:, 'Type'] = "Outcomes"
+    
+    return table1
