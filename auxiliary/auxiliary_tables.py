@@ -98,3 +98,28 @@ def create_table1(data):
     table1.loc[9:, 'Type'] = "Outcomes"
     
     return table1
+
+
+def create_table6(dictionary, keys, regressors):
+    table6 = pd.concat([estimate_RDD_multiple_datasets(dictionary=dictionary, 
+                                                       keys=keys, 
+                                                       outcome='gradin4',
+                                                       regressors= regressors), 
+                        estimate_RDD_multiple_datasets(dictionary=dictionary, 
+                                                       keys=keys, 
+                                                       outcome='gradin5',
+                                                       regressors= regressors),
+                        estimate_RDD_multiple_datasets(dictionary=dictionary, 
+                                                       keys=keys, 
+                                                       outcome='gradin6',
+                                                       regressors= regressors),
+                       ], axis=1
+                      )
+    table6.columns = pd.MultiIndex.from_product([['Graduated after 4 years',
+                                                  'Graduated after 5 years',
+                                                  'Graduated after 6 years'],
+                                                 ['GPA below cutoff (1)', 'P-Value (1)', 'Std.err (1)',
+                                                  'Intercept (0)', 'P-Value (0)', 'Std.err (0)',
+                                                  'Observations']
+                                                ])
+    return table6
