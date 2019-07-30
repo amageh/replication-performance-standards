@@ -81,7 +81,7 @@ def estimate_RDD_multiple_datasets(dictionary, keys, outcome, regressors):
 def create_table1(data):
     variables = data[['hsgrade_pct', 'totcredits_year1', 'age_at_entry', 'male', 'english', 'bpl_north_america',
                         'loc_campus1', 'loc_campus2', 'loc_campus3', 'dist_from_cut', 'probation_year1', 'probation_ever',
-                        'left_school', 'year2_dist_from_cut', 'suspended_ever', 'gradin4', 'gradin5', 'gradin6']]
+                        'left_school', 'nextGPA', 'suspended_ever', 'gradin4', 'gradin5', 'gradin6']]
 
     table1 = pd.DataFrame()
     table1['Mean'] = variables.mean()
@@ -123,3 +123,34 @@ def create_table6(dictionary, keys, regressors):
                                                   'Observations']
                                                 ])
     return table6
+
+
+def describe_covariates_at_cutoff(data,bandwidth):
+    variables = ['hsgrade_pct', 'totcredits_year1', 'age_at_entry', 'male', 'english', 'bpl_north_america',
+                  'loc_campus1', 'loc_campus2', 'loc_campus3']
+    
+    treat = pd.DataFrame()
+    untreat = pd.DataFrame()
+
+    sample = data[abs(data['dist_from_cut']) < bandwidth]
+    sample_treat = sample[sample['dist_from_cut'] < 0]
+    sample_untreat = sample[sample['dist_from_cut'] >= 0]
+    
+    #treated sample
+    treat['Mean'] = sample_treat[variables].mean()
+    treat['Std.'] = sample_treat[variables].std()
+    #untreated sample
+    untreat['Mean'] = sample_untreat[variables].mean()
+    untreat['Std.'] = sample_untreat[variables].std()
+    
+    table = pd.concat([treat, untreat], axis=1)
+    table.columns = pd.MultiIndex.from_product([['Below cutoff','Above cutoff'],
+                                             ['Mean','Std.']])
+    table = table.astype(float).round(2)
+    
+    table['Description'] = ["High School Grade Percentile", "Credits attempted first year", "Age at entry",
+                             "Male", "English is first language", "Born in North America",
+                             "At Campus 1", "At Campus 2", "At Campus 3"]
+    
+    
+    return table

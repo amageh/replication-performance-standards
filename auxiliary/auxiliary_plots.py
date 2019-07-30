@@ -121,6 +121,19 @@ def plot_hist_GPA(data):
     
     
     
+def plot_covariates(data, descriptive_table, bins):
+    plt.pyplot.figure(figsize=(13, 10), dpi=70, facecolor='w', edgecolor='k')
+    plt.pyplot.subplots_adjust(wspace=0.2, hspace=0.4)
+
+    for idx, var in enumerate(descriptive_table.index):
+        plt.pyplot.subplot(3, 3, idx + 1)
+        plt.pyplot.plot(data[var].groupby(data[bins]).mean(),'o', color='c', alpha=0.5)
+        plt.pyplot.axvline(x=0, color='r')
+        plt.pyplot.xlabel('Distance from cutoff')
+        plt.pyplot.ylabel('Mean')
+        plt.pyplot.title(descriptive_table.iloc[idx,4])
+        
+    
 def plot_figure1(data, bins, pred):
     """
     Args:
