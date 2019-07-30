@@ -258,4 +258,23 @@ def plot_figure5(data, pred_1, pred_2, pred_3):
 
     plt.pyplot.legend()
     plt.pyplot.title("Figure 5 - Graduation Rates")
-     
+
+def plot_figure4_with_CI(data, pred):
+    plt.pyplot.figure(figsize=(8, 6))
+    plt.pyplot.xlim(-1.5, 1.5, 0.1)
+    plt.pyplot.ylim(-0.5, 1.2, 0.1)
+    plt.pyplot.axvline(x=0, color='r')
+    plt.pyplot.xlabel('First year GPA minus probation cutoff')
+    plt.pyplot.ylabel('Subsequent GPA minus Cutoff')
+    plt.pyplot.plot(data.nextGPA.groupby(data['dist_from_cut_med10']).mean(), 'o')
+    plot_RDD_curve_CI(df=pred,
+                      running_variable="dist_from_cut",
+                      outcome="prediction",
+                      cutoff=0,
+                      lbound='lower_bound',
+                      ubound='upper_bound',
+                      CI_color='lightblue',
+                      linecolor='royalblue'
+                      )
+
+    plt.pyplot.title("GPA in the next enrolled term with CI")
