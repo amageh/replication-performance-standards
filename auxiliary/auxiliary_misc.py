@@ -77,4 +77,13 @@ def gen_placebo_data(data, cutoff_deviation):
     return placebo_data  
 
 
-
+def prepare_data(data):
+    # Add constant to data to use in regressions later.
+    data.loc[:, 'const'] = 1
+    
+    # Add dummy for being above the cutoff
+    data['nextGPA_above_cutoff'] = np.NaN
+    data.loc[data.nextGPA >= 0, 'nextGPA_above_cutoff'] = 1
+    data.loc[data.nextGPA < 0, 'nextGPA_above_cutoff'] = 0
+    
+    return data

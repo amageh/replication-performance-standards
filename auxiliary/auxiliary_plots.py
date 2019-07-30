@@ -100,6 +100,27 @@ def plot_RDD_curve_CI(df, running_variable, outcome, cutoff, lbound, ubound, CI_
                     label='_nolegend_')
 
 # Actual plots in notebook
+# Distribution of values for distance from cutoff.
+def plot_hist_GPA(data):
+    plt.pyplot.xlim(-1.8, 3)
+    plt.pyplot.ylim(0, 3500)
+    plt.pyplot.xticks([-1.2,-0.6,0,0.6,1.2,1.8,2.4,3])
+    plt.pyplot.hist(data['dist_from_cut'], bins=30, color='orange', alpha=0.7)
+    plt.pyplot.axvline(x=-1.2, color='c',alpha=0.8)
+    plt.pyplot.axvline(x=1.2, color='c',alpha=0.8)
+    plt.pyplot.axvline(x=0.6, color='c',alpha=0.3)
+    plt.pyplot.axvline(x=-0.6, color='c',alpha=0.3)
+    plt.pyplot.axvline(x=0, color='r')
+    plt.pyplot.fill_betweenx(y=range(3500),x1=-1.8,x2=-1.2,alpha=0.8, facecolor='c')
+    plt.pyplot.fill_betweenx(y=range(3500),x1=-1.2,x2=-0.6,alpha=0.3,facecolor='c')
+    plt.pyplot.fill_betweenx(y=range(3500),x1=1.2,x2=0.6,alpha=0.3,facecolor='c')
+    plt.pyplot.fill_betweenx(y=range(3500),x1=3,x2=1.2,alpha=0.8,facecolor='c')
+    plt.pyplot.xlabel('First year GPA minus probation cutoff')
+    plt.pyplot.ylabel('Freq.')
+    plt.pyplot.title('Distribution of student GPAs distance from the cutoff')
+    
+    
+    
 def plot_figure1(data, bins, pred):
     """
     Args:
