@@ -278,3 +278,29 @@ def plot_figure4_with_CI(data, pred):
                       )
 
     plt.pyplot.title("GPA in the next enrolled term with CI")
+    
+def plot_placebo_regression_fig3(placebo_data, keys, columns, regressors):
+    # Reduce dataset to range 1.2 as we used before
+    placebo_data12 = placebo_data[abs(placebo_data['dist_from_cut']) < 1.2].copy()
+    # Bin data according to new distances from cutoff
+    bins_labels = np.arange(-1.15, 1.25, 0.1)
+    placebo_data12['dist_from_cut_med10'] = pd.cut(x=placebo_data12['dist_from_cut'], 
+                                                    bins=24, 
+                                                    labels=bins_labels, 
+                                                    right=False
+                                                   )
+    placebo_groups_dict_12 = create_groups_dict(data=placebo_data12,
+                                             keys=groups_dict_keys,
+                                             columns=groups_dict_columns
+                                             )
+    
+    placebo_predictions_groups_dict = create_fig3_predictions(groups_dict=placebo_groups_dict_12,
+                                                              regressors=regressors,
+                                                              bandwidth=0.6
+                                                               )
+
+    placebo_figure_3 = plot_figure3(inputs_dict=placebo_groups_dict_12,
+                                 outputs_dict=placebo_predictions_groups_dict, 
+                                 keys=groups_dict_keys
+                                )
+    return placebo_figure_3
