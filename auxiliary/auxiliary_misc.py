@@ -87,3 +87,16 @@ def prepare_data(data):
     data.loc[data.nextGPA < 0, 'nextGPA_above_cutoff'] = 0
     
     return data
+
+def create_placebo_subdata(placebo_data):
+    placebo_data12 = placebo_data[abs(placebo_data['dist_from_cut']) < 1.2].copy()
+    # Bin data according to new distances from cutoff
+    bins_labels = np.arange(-1.15, 1.25, 0.1)
+    placebo_data12['dist_from_cut_med10'] = pd.cut(x=placebo_data12['dist_from_cut'], 
+                                                    bins=24, 
+                                                    labels=bins_labels, 
+                                                    right=False
+                                                   )
+    placebo_data06 = placebo_data12[abs(placebo_data12['dist_from_cut']) < 0.6].copy()
+    
+    return [placebo_data12, placebo_data06]

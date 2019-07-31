@@ -155,26 +155,3 @@ def describe_covariates_at_cutoff(data,bandwidth):
     
     return table
 
-
-
-def create_placebo_regression(placebo_data, keys, columns, regressors,outcome):
-    # Reduce dataset to range 1.2 as we used before
-    placebo_data12 = placebo_data[abs(placebo_data['dist_from_cut']) < 1.2].copy()
-    # Bin data according to new distances from cutoff
-    bins_labels = np.arange(-1.15, 1.25, 0.1)
-    placebo_data12['dist_from_cut_med10'] = pd.cut(x=placebo_data12['dist_from_cut'], 
-                                                    bins=24, 
-                                                    labels=bins_labels, 
-                                                    right=False
-                                                   )
-    placebo_data06 = placebo_data12[abs(placebo_data12['dist_from_cut']) < 0.6].copy()
-    placebo_groups_dict_06 = create_groups_dict(data=placebo_data06,
-                                                keys=groups_dict_keys,
-                                                columns=groups_dict_columns
-                                                 )
-    palcebo_reg_table = estimate_RDD_multiple_datasets(dictionary=placebo_groups_dict_06,
-                                                 keys=groups_dict_keys,
-                                                 outcome=outcome,
-                                                 regressors=regressors
-                                                 )
-    return palcebo_reg_table
