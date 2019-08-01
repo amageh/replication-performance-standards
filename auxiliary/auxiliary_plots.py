@@ -5,6 +5,12 @@ import pandas as pd
 import numpy as np
 import statsmodels as sm
 
+from auxiliary.auxiliary_predictions import *
+from auxiliary.auxiliary_plots import *
+from auxiliary.auxiliary_tables import *
+from auxiliary.auxiliary_misc import *
+
+
 # Axuiliary functions for plotting
 def plot_RDD_curve(df, running_variable, outcome, cutoff):
     """ Function to plot RDD curves. Function splits dataset into treated and untreated group based on running variable
@@ -127,7 +133,6 @@ def plot_covariates(data, descriptive_table, bins):
 
     for idx, var in enumerate(descriptive_table.index):
         plt.pyplot.subplot(3, 3, idx + 1)
-        plt.pyplot.plot(data[var].groupby(data[bins]).mean(),'o', color='c', alpha=0.5)
         plt.pyplot.axvline(x=0, color='r')
         plt.pyplot.xlabel('Distance from cutoff')
         plt.pyplot.ylabel('Mean')

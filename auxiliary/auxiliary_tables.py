@@ -7,6 +7,11 @@ import pandas as pd
 import numpy as np
 import statsmodels as sm
 
+from auxiliary.auxiliary_predictions import *
+from auxiliary.auxiliary_plots import *
+from auxiliary.auxiliary_tables import *
+from auxiliary.auxiliary_misc import *
+
 def estimate_RDD_multiple_outcomes(data, outcomes, regressors):
     """ Regression analysis with standard errors clustered on GPA, on probation cutoff for multiple outcomes contained in ONE dataframe.
 

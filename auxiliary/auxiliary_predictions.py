@@ -6,6 +6,10 @@ import pandas as pd
 import numpy as np
 import statsmodels as sm
 
+from auxiliary.auxiliary_predictions import *
+from auxiliary.auxiliary_plots import *
+from auxiliary.auxiliary_tables import *
+from auxiliary.auxiliary_misc import *
 
 def create_predictions(data, outcome, regressors, bandwidth):
 
