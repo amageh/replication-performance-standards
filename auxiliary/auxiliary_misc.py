@@ -86,6 +86,10 @@ def prepare_data(data):
     data.loc[data.nextGPA >= 0, 'nextGPA_above_cutoff'] = 1
     data.loc[data.nextGPA < 0, 'nextGPA_above_cutoff'] = 0
     
+    data['total_credits_year2'] = data['totcredits_year2']
+    data.loc[np.isnan(data.nextGPA)==True, 'total_credits_year2'] = np.NaN
+    data.loc[data.suspended_summer1 == 1, 'total_credits_year2'] = np.NaN
+    
     return data
 
 def create_placebo_subdata(placebo_data):

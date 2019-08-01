@@ -278,6 +278,19 @@ def plot_figure4_with_CI(data, pred):
                       )
 
     plt.pyplot.title("GPA in the next enrolled term with CI")
+
+    
+def plot_figure_credits_year2(data, pred):
+    plt.pyplot.figure(figsize=(8, 5))
+    plt.pyplot.xlim(-1.5, 1.5, 0.1)
+    plt.pyplot.ylim(2.5, 5, 0.1)
+    plt.pyplot.axvline(x=0, color='r')
+    plt.pyplot.xlabel('First year GPA minus probation cutoff')
+    plt.pyplot.ylabel('Subsequent GPA minus Cutoff')
+    plt.pyplot.plot(data.total_credits_year2.groupby(data['dist_from_cut_med10']).mean(), 'o')
+    plot_RDD_curve(df=pred, running_variable="dist_from_cut",outcome="prediction", cutoff=0)
+    plt.pyplot.title("Total credits in Second Year")     
+    
     
 def plot_left_school_all(data, pred):
     plt.pyplot.xlim(-1.5, 1.5, 0.1)
@@ -292,3 +305,4 @@ def plot_left_school_all(data, pred):
     
     plot_RDD_curve(df=pred, running_variable="dist_from_cut",outcome="prediction", cutoff=0)
     plt.pyplot.title("Left university voluntarily")
+    
