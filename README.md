@@ -14,9 +14,9 @@
 </a>
 
 
-This repository contains my replication of the results from Lindo et al. (2010) presented in the paper _"Ability, gender, and performance standards: Evidence from academic probation"_. 
+This repository contains my replication of the results from Lindo et al. (2010) presented in the paper [_"Ability, gender, and performance standards: Evidence from academic probation"_](https://www.aeaweb.org/articles?id=10.1257/app.2.2.95). 
 
-The paper and original STATA code can be found in the folder _paper_, the data provided is saved in _data_ and my replication which is conducted using Python is presented in the Jupyter notebook _project.ipynb_.
+The paper and original STATA code can be found in the folder _paper_, the data provided by the authors is saved in _data_ and my replication, which is conducted using Python, is presented in the Jupyter notebook [_project.ipynb_](https://github.com/HumanCapitalAnalysis/student-project-amageh/blob/master/project.ipynb).
 
 ### Short summary
 
