@@ -57,26 +57,6 @@ def create_groups_dict(data, keys, columns):
             
     return groups_dict
 
-def gen_placebo_data(data, cutoff_deviation):
-    
-    placebo_data = data.copy()
-    placebo_data.loc[:,'dist_from_cut'] = placebo_data.loc[:,'dist_from_cut'] - cutoff_deviation
-
-    for i in range(0,len(placebo_data)):
-        if placebo_data.loc[i,'dist_from_cut'] < 0:
-            placebo_data.loc[i,'gpalscutoff'] = 1
-            placebo_data.loc[i,'gpagrcutoff'] = 0
-
-        else:
-            placebo_data.loc[i,'gpalscutoff'] = 0
-            placebo_data.loc[i,'gpagrcutoff'] = 1
-
-    placebo_data['gpaXgpalscutoff'] = placebo_data['dist_from_cut']*placebo_data['gpalscutoff']
-    placebo_data['gpaXgpagrcutoff'] = placebo_data['dist_from_cut']*placebo_data['gpagrcutoff']  
-    
-    return placebo_data  
-
-
 def prepare_data(data):
     # Add constant to data to use in regressions later.
     data.loc[:, 'const'] = 1
@@ -92,22 +72,9 @@ def prepare_data(data):
     
     return data
 
-def create_placebo_subdata(placebo_data):
-    placebo_data12 = placebo_data[abs(placebo_data['dist_from_cut']) < 1.2].copy()
-    # Bin data according to new distances from cutoff
-    bins_labels = np.arange(-1.15, 1.25, 0.1)
-    placebo_data12['dist_from_cut_med10'] = pd.cut(x=placebo_data12['dist_from_cut'], 
-                                                    bins=24, 
-                                                    labels=bins_labels, 
-                                                    right=False
-                                                   )
-    placebo_data06 = placebo_data12[abs(placebo_data12['dist_from_cut']) < 0.6].copy()
-    
-    return [placebo_data12, placebo_data06]
-
-
 
 def bandwidth_sensitivity_summary(data, outcome, groups_dict_keys, groups_dict_columns, regressors):
+    from auxiliary.auxiliary_tables import estimate_RDD_multiple_datasets
     bandwidths = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1,1.2]
     arrays = [np.array([0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.4, 0.5, 0.5, 
                         0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.9, 0.9, 1, 1, 1.1, 1.1, 1.2, 1.2]),
