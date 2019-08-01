@@ -134,6 +134,7 @@ def plot_covariates(data, descriptive_table, bins):
     for idx, var in enumerate(descriptive_table.index):
         plt.pyplot.subplot(3, 3, idx + 1)
         plt.pyplot.axvline(x=0, color='r')
+        plt.pyplot.plot(data[var].groupby(data['dist_from_cut_med05']).mean(),'o', color='c', alpha=0.5)
         plt.pyplot.xlabel('Distance from cutoff')
         plt.pyplot.ylabel('Mean')
         plt.pyplot.title(descriptive_table.iloc[idx,4])
