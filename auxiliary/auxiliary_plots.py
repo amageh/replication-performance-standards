@@ -10,6 +10,7 @@ from auxiliary.auxiliary_plots import *
 from auxiliary.auxiliary_tables import *
 from auxiliary.auxiliary_misc import *
 
+plt.pyplot.grid(True)
 
 # Axuiliary functions for plotting
 def plot_RDD_curve(df, running_variable, outcome, cutoff):
@@ -25,6 +26,7 @@ def plot_RDD_curve(df, running_variable, outcome, cutoff):
         Returns:
             plot
     """
+    plt.pyplot.grid(True)
     df_treat = df[df[running_variable] < cutoff]
     df_untreat = df[df[running_variable] >= cutoff]
     plt.pyplot.plot(df_treat[outcome])
@@ -46,6 +48,7 @@ def plot_RDD_curve_colored(df, running_variable, outcome, cutoff, color):
         Returns:
             plot
     """
+    plt.pyplot.grid(True)
     df_treat = df[df[running_variable] < cutoff]
     df_untreat = df[df[running_variable] >= cutoff]
     plt.pyplot.plot(
@@ -76,6 +79,7 @@ def plot_RDD_curve_CI(df, running_variable, outcome, cutoff, lbound, ubound, CI_
         Returns:
             plot
     """
+    plt.pyplot.grid(True)
     df_treat = df[df[running_variable] < cutoff]
     df_untreat = df[df[running_variable] >= cutoff]
     # Plot confidence Intervals
@@ -106,7 +110,6 @@ def plot_RDD_curve_CI(df, running_variable, outcome, cutoff, lbound, ubound, CI_
                     label='_nolegend_')
 
 # Actual plots in notebook
-# Distribution of values for distance from cutoff.
 def plot_hist_GPA(data):
     plt.pyplot.xlim(-1.8, 3)
     plt.pyplot.ylim(0, 3500)
@@ -134,6 +137,7 @@ def plot_covariates(data, descriptive_table, bins):
     for idx, var in enumerate(descriptive_table.index):
         plt.pyplot.subplot(3, 3, idx + 1)
         plt.pyplot.axvline(x=0, color='r')
+        plt.pyplot.grid(True)
         plt.pyplot.plot(data[var].groupby(data['dist_from_cut_med05']).mean(),'o', color='c', alpha=0.5)
         plt.pyplot.xlabel('Distance from cutoff')
         plt.pyplot.ylabel('Mean')

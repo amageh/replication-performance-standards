@@ -75,7 +75,6 @@ def prepare_data(data):
     # who were suspened before second year
     data['total_credits_year2'] = data['totcredits_year2']
     data.loc[np.isnan(data.nextGPA)==True, 'total_credits_year2'] = np.NaN
-    data.loc[data.suspended_summer1 == 1, 'total_credits_year2'] = np.NaN
     # Add variable for campus specific cutoff
     data['cutoff'] = 1.5
     data.loc[data.loc_campus3 == 1, 'cutoff'] = 1.6
