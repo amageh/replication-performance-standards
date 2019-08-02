@@ -106,3 +106,57 @@ def bandwidth_sensitivity_summary(data, outcome, groups_dict_keys, groups_dict_c
                 summary.loc[(val,'probation'), i] = 'x'
 
     return summary
+
+
+
+def trim_data(groups_dict, trim_perc, case1, case2):
+    """ Creates trimmed data for upper and lower bound analysis by trimming the top and bottom percent of 
+    students from control or treatment group. This can be used for the upper bound and lower bound. 
+    * For lower bound use case1 = True and case2 = False
+    * For upper bound use case1 = False and case2 = True.
+    
+    Args:
+        groups_dict(dictionary): Dictionary that holds all datasets that should be trimmed.
+        trim_perc(pd.Series/pd.DataFrame): Series oder dataframe that for each dataset in groups dict specifies
+                                           how much should be trimmed.
+        case1(True or False): Specifies whether lower or upper bound should be trimmed in the case where the the trimamount
+                              is positive and the control group is trimmed.
+        case2(True or False): Specifies whether lower or upper bound should be trimmed in the case where the the trimamount
+                              is negative and the treatment group is trimmed.
+                              
+    Returns: 
+        trimmed_dict(dictionary): Dictionary holding the trimmed datasets.
+    """
+    
+    trimmed_dict = {}
+    for key in groups_dict.keys():
+        # Create data to be trimmed
+        data = groups_dict[key].copy()
+        control = data[data.dist_from_cut >=0].copy()
+        treat = data[data.dist_from_cut < 0].copy()
+        
+        trimamount = float(trim_perc[key])
+        
+        # Trim control group
+        if trimamount > 0:
+            n = round(len(control[control.left_school ==1])*trimamount)
+            control.sort_values('nextGPA', inplace=True, ascending = case1)
+            trimmed_students = control.iloc[0:n] 
+            trimmed_students_ids = list(trimmed_students.identifier)
+            trimmed_control = control[control.identifier.isin(trimmed_students_ids) == False]
+            df = pd.concat([trimmed_control, treat], axis=0)
+        
+        # If the trimamount is negative, we need to trim the treatment instead of the control group.
+        elif trimamount < 0:
+            trimamount = abs(trimamount)
+            n = round(len(treat[treat.left_school ==1])*trimamount)
+            treat.sort_values('nextGPA', inplace=True, ascending = case2)
+            trimmed_students = treat.iloc[0:n] 
+            trimmed_students_ids = list(trimmed_students.identifier)
+            trimmed_treat = treat[treat.identifier.isin(trimmed_students_ids) == False]
+            df = pd.concat([trimmed_treat, control], axis=0)
+    
+        trimmed_dict[key] = df
+        
+        
+    return trimmed_dict
