@@ -10,7 +10,6 @@ from auxiliary.auxiliary_plots import *
 from auxiliary.auxiliary_tables import *
 from auxiliary.auxiliary_misc import *
 
-plt.pyplot.grid(True)
 
 # Axuiliary functions for plotting
 def plot_RDD_curve(df, running_variable, outcome, cutoff):
@@ -83,21 +82,21 @@ def plot_RDD_curve_CI(df, running_variable, outcome, cutoff, lbound, ubound, CI_
     df_treat = df[df[running_variable] < cutoff]
     df_untreat = df[df[running_variable] >= cutoff]
     # Plot confidence Intervals
-    plt.pyplot.plot(df_treat[lbound], color=CI_color, alpha=0.7)
-    plt.pyplot.plot(df_treat[ubound], color=CI_color, alpha=0.7)
-    plt.pyplot.plot(df_untreat[lbound], color=CI_color, alpha=0.7)
-    plt.pyplot.plot(df_untreat[ubound], color=CI_color, alpha=0.7)
+    plt.pyplot.plot(df_treat[lbound], color=CI_color, alpha=0.3)
+    plt.pyplot.plot(df_treat[ubound], color=CI_color, alpha=0.3)
+    plt.pyplot.plot(df_untreat[lbound], color=CI_color, alpha=0.3)
+    plt.pyplot.plot(df_untreat[ubound], color=CI_color, alpha=0.3)
     plt.pyplot.fill_between(df_treat[running_variable], 
                             y1=df_treat[lbound], 
                             y2=df_treat[ubound], 
                             facecolor=CI_color, 
-                            alpha=0.7
+                            alpha=0.3
                            )
     plt.pyplot.fill_between(df_untreat[running_variable], 
                             y1=df_untreat[lbound], 
                             y2=df_untreat[ubound], 
                             facecolor=CI_color, 
-                            alpha=0.7
+                            alpha=0.3
                            )
     
     # Plot estimated lines
@@ -283,8 +282,8 @@ def plot_figure4_with_CI(data, pred):
                       cutoff=0,
                       lbound='lower_bound',
                       ubound='upper_bound',
-                      CI_color='lightblue',
-                      linecolor='royalblue'
+                      CI_color='c',
+                      linecolor='orange'
                       )
 
     plt.pyplot.title("GPA in the next enrolled term with CI")

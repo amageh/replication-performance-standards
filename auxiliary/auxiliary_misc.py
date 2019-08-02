@@ -71,8 +71,7 @@ def prepare_data(data):
     data.loc[data.nextCGPA >= 0, 'nextCGPA_above_cutoff'] = 1
     data.loc[data.nextCGPA < 0, 'nextCGPA_above_cutoff'] = 0
     
-    # Remove zeros from total credits for people whose next GPA is missing and 
-    # who were suspened before second year
+    # Remove zeros from total credits for people whose next GPA is missing 
     data['total_credits_year2'] = data['totcredits_year2']
     data.loc[np.isnan(data.nextGPA)==True, 'total_credits_year2'] = np.NaN
     # Add variable for campus specific cutoff
