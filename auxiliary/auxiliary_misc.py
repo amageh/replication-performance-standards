@@ -61,10 +61,15 @@ def prepare_data(data):
     # Add constant to data to use in regressions later.
     data.loc[:, 'const'] = 1
     
-    # Add dummy for being above the cutoff
+    # Add dummy for being above the cutoff in next GPA
     data['nextGPA_above_cutoff'] = np.NaN
     data.loc[data.nextGPA >= 0, 'nextGPA_above_cutoff'] = 1
     data.loc[data.nextGPA < 0, 'nextGPA_above_cutoff'] = 0
+    
+    # Add dummy for cumulative GPA being above the cutoff
+    data['nextCGPA_above_cutoff'] = np.NaN
+    data.loc[data.nextCGPA >= 0, 'nextCGPA_above_cutoff'] = 1
+    data.loc[data.nextCGPA < 0, 'nextCGPA_above_cutoff'] = 0
     
     # Remove zeros from total credits for people whose next GPA is missing and 
     # who were suspened before second year

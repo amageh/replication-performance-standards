@@ -292,7 +292,7 @@ def plot_figure_credits_year2(data, pred):
     plt.pyplot.ylim(2.5, 5, 0.1)
     plt.pyplot.axvline(x=0, color='r')
     plt.pyplot.xlabel('First year GPA minus probation cutoff')
-    plt.pyplot.ylabel('Subsequent GPA minus Cutoff')
+    plt.pyplot.ylabel('Total credits in year 2')
     plt.pyplot.plot(data.total_credits_year2.groupby(data['dist_from_cut_med10']).mean(), 'o')
     plot_RDD_curve(df=pred, running_variable="dist_from_cut",outcome="prediction", cutoff=0)
     plt.pyplot.title("Total credits in Second Year")     
@@ -311,4 +311,16 @@ def plot_left_school_all(data, pred):
     
     plot_RDD_curve(df=pred, running_variable="dist_from_cut",outcome="prediction", cutoff=0)
     plt.pyplot.title("Left university voluntarily")
+    
+    
+def plot_nextCGPA(data, pred):
+    plt.pyplot.figure(figsize=(8, 5))
+    plt.pyplot.xlim(-1.5, 1.5, 0.1)
+    plt.pyplot.ylim(-1, 1.5, 0.1)
+    plt.pyplot.axvline(x=0, color='r')
+    plt.pyplot.xlabel('First year GPA minus probation cutoff')
+    plt.pyplot.ylabel('Subsequent CGPA minus cutoff')
+    plt.pyplot.plot(data.nextCGPA.groupby(data['dist_from_cut_med10']).mean(), 'o')
+    plot_RDD_curve(df=pred, running_variable="dist_from_cut",outcome="prediction", cutoff=0)
+    plt.pyplot.title("CGPA in the next enrolled term")   
     
