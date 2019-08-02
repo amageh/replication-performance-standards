@@ -11,7 +11,7 @@ from auxiliary.auxiliary_tables import *
 from auxiliary.auxiliary_misc import *
 
 
-# Axuiliary functions for plotting
+# Axuiliary functions for plotting ----------------------------------------------------------------------------------
 def plot_RDD_curve(df, running_variable, outcome, cutoff):
     """ Function to plot RDD curves. Function splits dataset into treated and untreated group based on running variable
         and plots outcome (group below cutoff is treated, group above cutoff is untreated).
@@ -108,7 +108,7 @@ def plot_RDD_curve_CI(df, running_variable, outcome, cutoff, lbound, ubound, CI_
                     color=linecolor, 
                     label='_nolegend_')
 
-# Actual plots in notebook
+# Actual plots in notebook --------------------------------------------------------------------------------
 def plot_hist_GPA(data):
     plt.pyplot.xlim(-1.8, 3)
     plt.pyplot.ylim(0, 3500)

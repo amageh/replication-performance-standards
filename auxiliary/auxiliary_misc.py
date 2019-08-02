@@ -10,14 +10,22 @@ from auxiliary.auxiliary_plots import *
 from auxiliary.auxiliary_tables import *
 from auxiliary.auxiliary_misc import *
 
-def pvalue_5percent_red(val):
-    """
-    Formatting Function: Takes a scalar and returns a string with the css property `'color: red'` 
-    for values below 0.05, black otherwise.
-    """
-    color = 'red' if val < 0.05 else 'black'
-    return 'color: %s' % color
 
+def color_pvalues(value):
+    """
+    Color pvalues in ouput tables.
+    """
+
+    if value < 0.01:
+        color = 'darkorange'
+    elif value < 0.05:
+        color = 'red'
+    elif value < 0.1:
+        color = 'magenta'
+    else:
+        color = 'black'
+
+    return 'color: %s' % color
 
 def calculate_bin_frequency(data, bins):
     """
