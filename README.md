@@ -23,7 +23,7 @@ In this project I replicate the results from Lindo et al. (2010) and explore the
 
 ### This Repository
 
-My replication, which is conducted using Python, is presented in the Jupyter notebook [_project.ipynb_](https://github.com/HumanCapitalAnalysis/student-project-amageh/blob/master/project.ipynb). The best way to view the notebook is by downloading this [_repository_](https://github.com/HumanCapitalAnalysis/student-project-amageh) from Github. Alternatively the notebook can be viewed via mybinder or nbviewer by clicking the badges above. However, these viewing options may have issues with displaying images or coloring of certain parts (missing images can be viewed in the folder [_files_](https://github.com/HumanCapitalAnalysis/student-project-amageh/tree/master/files)). The original paper as well the data and code provided by the authors can be accessed [here](https://www.aeaweb.org/articles?id=10.1257/app.2.2.95). 
+My replication, which is conducted using Python, is presented in the Jupyter notebook [_project.ipynb_](https://github.com/HumanCapitalAnalysis/student-project-amageh/blob/master/project.ipynb). The best way to view the notebook is by downloading this [_repository_](https://github.com/HumanCapitalAnalysis/student-project-amageh) from GitHub. Alternatively the notebook can be viewed via mybinder or nbviewer by clicking the badges above. However, these viewing options may have issues with displaying images or coloring of certain parts (missing images can be viewed in the folder [_files_](https://github.com/HumanCapitalAnalysis/student-project-amageh/tree/master/files)). The original paper as well the data and code provided by the authors can be accessed [here](https://www.aeaweb.org/articles?id=10.1257/app.2.2.95). 
 
 ## References
 
