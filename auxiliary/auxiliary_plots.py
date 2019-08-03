@@ -171,6 +171,7 @@ def plot_figure2(data, pred):
     plt.pyplot.xlabel('First year GPA minus probation cutoff')
     plt.pyplot.ylabel('Probation Status')
 
+    
 def plot_figure3(inputs_dict, outputs_dict, keys):
     """ Plot results from RD anlaysis for the six subgroups of students in the paper.
     
