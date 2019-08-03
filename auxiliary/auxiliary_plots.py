@@ -110,6 +110,10 @@ def plot_RDD_curve_CI(df, running_variable, outcome, cutoff, lbound, ubound, CI_
 
 # Actual plots in notebook --------------------------------------------------------------------------------
 def plot_hist_GPA(data):
+    """
+    Plots historgram showing the distribution of stuents according to distance
+    from fist year cutoff.
+    """
     plt.pyplot.xlim(-1.8, 3)
     plt.pyplot.ylim(0, 3500)
     plt.pyplot.xticks([-1.2,-0.6,0,0.6,1.2,1.8,2.4,3])
@@ -130,6 +134,9 @@ def plot_hist_GPA(data):
     
     
 def plot_covariates(data, descriptive_table, bins):
+    """
+    Plots covariates with bins of size 0.5 grade points.
+    """
     plt.pyplot.figure(figsize=(13, 10), dpi=70, facecolor='w', edgecolor='k')
     plt.pyplot.subplots_adjust(wspace=0.2, hspace=0.4)
 
@@ -145,6 +152,8 @@ def plot_covariates(data, descriptive_table, bins):
     
 def plot_figure1(data, bins, pred):
     """
+    Plots Figure 1.
+
     Args:
     data(pd.DataFrame): Dataframe containing the frequency of each bin.
     bins(list): List of bins.
@@ -163,6 +172,9 @@ def plot_figure1(data, bins, pred):
     
 
 def plot_figure2(data, pred):
+    """
+    Plots Figure 2.
+    """
     plt.pyplot.xlim(-1.5, 1.5, 0.1)
     plt.pyplot.plot(data['dist_from_cut_med10'], data['gpalscutoff'], 'o')
     plot_RDD_curve(df=pred, running_variable="dist_from_cut", outcome="prediction", cutoff=0)
@@ -173,7 +185,7 @@ def plot_figure2(data, pred):
 
     
 def plot_figure3(inputs_dict, outputs_dict, keys):
-    """ Plot results from RD anlaysis for the six subgroups of students in the paper.
+    """ Plot results from RD anlaysis for the six subgroups of students in the paper for Figure3.
     
     Args:
         inputs_dict(dict): Dictionary containing all dataframes for each subgroup, used for plotting the bins (dots).
@@ -216,6 +228,9 @@ def plot_figure3(inputs_dict, outputs_dict, keys):
         plt.pyplot.title(key)
 
 def plot_figure4(data, pred):
+    """
+    Plots Figure 4.
+    """
     plt.pyplot.figure(figsize=(8, 5))
     plt.pyplot.xlim(-1.5, 1.5, 0.1)
     plt.pyplot.ylim(-1, 1.5, 0.1)
@@ -227,6 +242,9 @@ def plot_figure4(data, pred):
     plt.pyplot.title("Figure 4 - GPA in the next enrolled term")   
 
 def plot_figure5(data, pred_1, pred_2, pred_3):
+    """
+    Plots Figure 5.
+    """
     plt.pyplot.figure(figsize=(8, 5))
     plt.pyplot.xlim(-1.5, 1.5, 0.1)
     plt.pyplot.ylim(0, 1, 0.1)
@@ -270,6 +288,9 @@ def plot_figure5(data, pred_1, pred_2, pred_3):
     plt.pyplot.title("Figure 5 - Graduation Rates")
 
 def plot_figure4_with_CI(data, pred):
+    """
+    Plots Figure 4 with confidence intervals.
+    """
     plt.pyplot.figure(figsize=(8, 6))
     plt.pyplot.xlim(-1.5, 1.5, 0.1)
     plt.pyplot.ylim(-0.5, 1.2, 0.1)
