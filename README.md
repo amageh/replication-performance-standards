@@ -13,7 +13,8 @@
        width="109" height="20">
 </a>
 
-This repository contains my replication of the results from Lindo et al. (2010) presented in the paper [_"Ability, gender, and performance standards: Evidence from academic probation"_](https://www.aeaweb.org/articles?id=10.1257/app.2.2.95). 
+This repository contains my replication of the results from [Lindo, J. M., Sanders, N. J., & Oreopoulos, P. (2010)](https://www.aeaweb.org/articles?id=10.1257/app.2.2.95). Ability, Gender, and Performance Standards: Evidence from Academic Probation. _American Economic Journal: Applied Economics_, 2(2), 95-117.
+ 
 
 ### Replication of Lindo et al. (2010)
 
@@ -27,7 +28,7 @@ My replication, which is conducted using Python, is presented in the Jupyter not
 
 ## References
 
-* Lindo, J. M., Sanders, N. J., & Oreopoulos, P. (2010). Ability, gender, and performance standards: Evidence from academic probation. American Economic Journal: Applied Economics, 2(2), 95-117.
+* __Lindo, J. M., Sanders, N. J., & Oreopoulos, P. (2010)__. Ability, Gender, and Performance Standards: Evidence from Academic Probation. _American Economic Journal: Applied Economics_, 2(2), 95-117.
 --- 
 [![Build Status](https://travis-ci.org/HumanCapitalAnalysis/student-project-amageh.svg?branch=master)](https://travis-ci.org/HumanCapitalAnalysis/student-project-amageh)
 </a> 
