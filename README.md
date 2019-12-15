@@ -18,9 +18,9 @@ This repository contains my replication of the results from [Lindo, J. M., Sande
 
 ### Replication of Lindo et al. (2010)
 
-Lindo et al. (2010) examine the effects of academic probation on student outcomes using a regression discontinuity design. The analysis is based on data from large Canadian university and evaluates whether academic probation is successful in improving the performance of low scoring students. Consistent with a model of performance standards, the authors find that being placed on probation in the first year of university induces some students to drop out of school while it improves the grades of students who continue their studies. In a more general sense, academic probation can offer insights into how agents respond to negative incentives and the threat of punishment in a real world context.
+Lindo et al. (2010) examine the effects of academic probation on student outcomes using a regression discontinuity design. The analysis is based on data from a large Canadian university and evaluates whether academic probation is successful in improving the performance of low scoring students. Consistent with a model of performance standards, the authors find that being placed on probation in the first year of university induces some students to drop out of school while it improves the grades of students who continue their studies. In a more general sense, academic probation can offer insights into how agents respond to negative incentives and the threat of punishment in a real world context.
 
-In this project I replicate the results from Lindo et al. (2010) and explore the underlying causal relationships between academic probation and student outcomes. In addition the replication, I also extend the analysis by implementing various robustness checks for the findings presented in the paper.
+In this project I replicate the results from Lindo et al. (2010) and explore the underlying causal relationships between academic probation and student outcomes. In addition to the replication, I extend the analysis by implementing various robustness checks for the findings presented in the paper.
 
 ### This Repository
 
@@ -29,8 +29,12 @@ My replication, which is conducted using Python, is presented in the Jupyter not
 ## References
 
 * __Lindo, J. M., Sanders, N. J., & Oreopoulos, P. (2010)__. Ability, Gender, and Performance Standards: Evidence from Academic Probation. _American Economic Journal: Applied Economics_, 2(2), 95-117.
+
+* __Eisenhauer, P. (2019)__. Course project template, _HumanCapitalAnalysis_, [https://github.com/HumanCapitalAnalysis/template-course-project](https://github.com/HumanCapitalAnalysis/template-course-project).
+
+
 --- 
-[![Build Status](https://travis-ci.org/HumanCapitalAnalysis/student-project-amageh.svg?branch=master)](https://travis-ci.org/HumanCapitalAnalysis/student-project-amageh)
+[![Build Status](https://travis-ci.com/amageh/replication-performance-standards)](https://travis-ci.org/HumanCapitalAnalysis/student-project-amageh)
 </a> 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/HumanCapitalAnalysis/student-project-amageh/blob/master/LICENSE) 
 </a> 
