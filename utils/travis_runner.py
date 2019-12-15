@@ -4,6 +4,6 @@ import subprocess as sp
 
 if __name__ == '__main__':
 
-    notebook = 'project.ipynb'
+    notebook = 'replication-notebook.ipynb'
     cmd = ' jupyter nbconvert --execute {}  --ExecutePreprocessor.timeout=-1'.format(notebook)
     sp.check_call(cmd, shell=True)

@@ -1,4 +1,4 @@
-name: project
+name: replication-notebook
 
 dependencies:
 - numpy
@@ -9,5 +9,4 @@ dependencies:
 - seaborn
 - scipy
 - statsmodels
-- pip:
-  - grmpy
+
