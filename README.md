@@ -1,17 +1,19 @@
 # Student project: Replication of Lindo, Sanders & Oreopoulos (2010)
 
-<a href="https://nbviewer.jupyter.org/github/HumanCapitalAnalysis/student-project-amageh/blob/master/project.ipynb"
+<a href="https://nbviewer.jupyter.org/github/amageh/replication-performance-standards/blob/master/replication-notebook.ipynb"
    target="_parent">
    <img align="center" 
   src="https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.png" 
       width="109" height="20"> 
 </a> 
-<a href="https://mybinder.org/v2/gh/HumanCapitalAnalysis/student-project-amageh/master?filepath=project.ipynb"
+<a href="https://mybinder.org/v2/gh/amageh/replication-performance-standards/master?filepath=replication-notebook.ipynb"
     target="_parent">
     <img align="center"
        src="https://mybinder.org/badge_logo.svg"
        width="109" height="20">
 </a>
+
+
 
 This repository contains my replication of the results from [Lindo, J. M., Sanders, N. J., & Oreopoulos, P. (2010)](https://www.aeaweb.org/articles?id=10.1257/app.2.2.95). Ability, Gender, and Performance Standards: Evidence from Academic Probation. _American Economic Journal: Applied Economics_, 2(2), 95-117.
  
