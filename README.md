@@ -34,7 +34,7 @@ My replication, which is conducted using Python, is presented in the Jupyter not
 
 
 --- 
-[![Build Status](https://travis-ci.com/amageh/replication-performance-standards)](https://travis-ci.org/HumanCapitalAnalysis/student-project-amageh)
+[![Build Status][![Build Status](https://travis-ci.com/amageh/replication-performance-standards.svg?token=aeDYCzdxUYKzxPmFNa2V&branch=master)](https://travis-ci.com/amageh/replication-performance-standards)
 </a> 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/HumanCapitalAnalysis/student-project-amageh/blob/master/LICENSE) 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/amageh/replication-performance-standards/blob/master/LICENSE) 
 </a> 
