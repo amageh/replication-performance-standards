@@ -13,10 +13,10 @@ from auxiliary.auxiliary_misc import *
 
 
 def create_predictions(data, outcome, regressors, bandwidth):
-
+    
     steps = np.arange(-1.2, 1.25, 0.05)
     predictions_df = pd.DataFrame([])
-    # Ensure there are no missings in the outcome variable
+    # Ensure there are no missings in the outcome variable.
     data = data.dropna(subset=[outcome])
     # Loop through bins or 'steps'.
     for step in steps:
@@ -56,11 +56,10 @@ def create_predictions(data, outcome, regressors, bandwidth):
 
 
 def create_bin_frequency_predictions(data, steps, bandwidth):
-
-    #steps = np.arange(-1.2, 1.25, 0.05)
+    """
+    
+    """
     predictions_df = pd.DataFrame([])
-    # Ensure there are no missings in the outcome variable
-    #data = data.dropna(subset=[outcome])
     # Loop through bins or 'steps'.
     for step in steps:
         df = data[(data.bins >= (step - bandwidth)) &
@@ -84,7 +83,10 @@ def create_bin_frequency_predictions(data, steps, bandwidth):
 
 
 def create_fig3_predictions(groups_dict, regressors, bandwidth):
-
+    """
+    Compute predicted outcomes for figure 3.
+    """
+    
     predictions_groups_dict = {}
     # Loop through groups:
     for group in groups_dict:
@@ -112,8 +114,9 @@ def create_fig3_predictions(groups_dict, regressors, bandwidth):
 
             predictions_df.loc[step, 'gpaXgpalscutoff'] = (
                 predictions_df.loc[step, 'dist_from_cut']) * predictions_df.loc[step, 'gpalscutoff']
-            predictions_df.loc[step, 'gpaXgpagrcutoff'] = (predictions_df.loc[
-                                                           step, 'dist_from_cut']) * (1 - predictions_df.loc[step, 'gpalscutoff'])
+            
+            predictions_df.loc[step, 'gpaXgpagrcutoff'] = (
+                predictions_df.loc[step, 'dist_from_cut']) * (1 - predictions_df.loc[step, 'gpalscutoff'])
             predictions_df.loc[step, 'const'] = 1
 
             # Make prediction for each step based on regression of each step
@@ -126,6 +129,7 @@ def create_fig3_predictions(groups_dict, regressors, bandwidth):
             ]])
 
             predictions_df = predictions_df.round(4)
+            
         # Save the predictions for all groups in a dictionary.
         predictions_groups_dict[group] = predictions_df
 
@@ -133,6 +137,9 @@ def create_fig3_predictions(groups_dict, regressors, bandwidth):
 
 
 def bootstrap_predictions(n, data, outcome, regressors, bandwidth):
+    """
+    Compute predicted outcome from bootstrap with replacement.
+    """
     bootstrap_pred = pd.DataFrame({})
     for i in range(0, n):
         bootstrap = data.sample(n=len(data), replace=True)
@@ -144,6 +151,9 @@ def bootstrap_predictions(n, data, outcome, regressors, bandwidth):
 
 
 def get_confidence_interval(data, lbound, ubound, index_var):
+    """
+    Compute confidence interval from data of bootstrapped predictions.
+    """
     confidence_interval = pd.DataFrame({})
     for i in data.index:
         confidence_interval.loc[i, "lower_bound"] = np.percentile(data.loc[
@@ -151,5 +161,6 @@ def get_confidence_interval(data, lbound, ubound, index_var):
         confidence_interval.loc[i, "upper_bound"] = np.percentile(data.loc[
                                                                   i, :], ubound)
 
-    confidence_interval[index_var] = confidence_interval.index
+    confidence_interval[index_var] = confidence_interval.index 
+    
     return confidence_interval
