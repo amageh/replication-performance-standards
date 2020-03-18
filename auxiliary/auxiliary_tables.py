@@ -10,7 +10,24 @@ import statsmodels as sm
 from auxiliary.auxiliary_predictions import *
 from auxiliary.auxiliary_plots import *
 from auxiliary.auxiliary_tables import *
-from auxiliary.auxiliary_misc import *
+
+
+def color_pvalues(value):
+    """
+    Color pvalues in output tables.
+    """
+
+    if value < 0.01:
+        color = "darkorange"
+    elif value < 0.05:
+        color = "red"
+    elif value < 0.1:
+        color = "magenta"
+    else:
+        color = "black"
+
+    return "color: %s" % color
+
 
 def estimate_RDD_multiple_outcomes(data, outcomes, regressors):
     """ Regression analysis with standard errors clustered on GPA, on probation cutoff for multiple 
@@ -47,6 +64,7 @@ def estimate_RDD_multiple_outcomes(data, outcomes, regressors):
         table.loc[outcome] = outputs
 
     table = table.round(3)
+    
     return table
 
 
